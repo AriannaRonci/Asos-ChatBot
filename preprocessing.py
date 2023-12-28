@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-import json
+
 file_path = 'data/products_asos.csv'
 df = pd.read_csv(file_path)
 
