@@ -1,6 +1,6 @@
 import pandas as pd
 import re
-
+import json
 file_path = 'data/products_asos.csv'
 df = pd.read_csv(file_path)
 
@@ -10,3 +10,4 @@ df = df.drop_duplicates(subset='sku')
 df['images'] = df['images'].apply(lambda x: re.search(r"'(.*?)'", x).group(1) if pd.notnull(x) else x)
 df = df.rename(columns={'images': 'image'})
 
+df['color'] = df['color'].str.title()
