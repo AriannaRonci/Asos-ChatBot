@@ -22,42 +22,50 @@ size_fit = []
 look_after_me = []
 about_me = []
 
+def remove_common(a, b):
+    for i in a[:]:
+        if i in b:
+            a.remove(i)
+            b.remove(i)
+    return a
+
 for i in indexes:
+    added_fields = ['Product Details', 'Brand', 'Size & Fit', 'Look After Me', 'About Me']
     dict_keys = []
     for j in range(0, len(df['description'][i])):
         dict_keys.append(str(df['description'][i][j].keys()).replace("dict_keys(['", "").replace("'])", ""))
+    if dict_keys == added_fields:
+        True
+    else:
+        missing = remove_common(added_fields, dict_keys)
+        if missing.__contains__('Brand'):
+            df['description'][i].insert(1, dict({'Brand': 'Information not available'}))
+        if missing.__contains__('Size & Fit'):
+            df['description'][i].insert(2, dict({'Size & Fit': 'Information not available'}))
+        if missing.__contains__('Look After Me'):
+            df['description'][i].insert(3, dict({'Look After Me': 'Information not available'}))
+        if missing.__contains__('About Me'):
+            df['description'][i].insert(4, dict({'About Me': 'Information not available'}))
+
     for entry in df['description'][i]:
         if i == 0:
             column_name.append(list(entry.keys())[0])
 
         if list(entry.keys())[0] == 'Product Details':
-            if list(entry.values())[0] != '':
-                product_details.append(list(entry.values())[0])
-            else:
-                product_details.append('Information not available')
+            product_details.append(list(entry.values())[0])
 
         if list(entry.keys())[0] == 'Brand':
             brand.append(list(entry.values())[0])
-        else:
-            brand.append('Information not available')
 
         if list(entry.keys())[0] == 'Size & Fit':
-            if list(entry.values())[0] != '':
-                size_fit.append(list(entry.values())[0])
-            else:
-                size_fit.append('Information not available')
+            size_fit.append(list(entry.values())[0])
 
         if list(entry.keys())[0] == 'Look After Me':
-            if list(entry.values())[0] != '':
-                look_after_me.append(list(entry.values())[0])
-            else:
-                look_after_me.append('Information not available')
+            look_after_me.append(list(entry.values())[0])
 
         if list(entry.keys())[0] == 'About Me':
-            if list(entry.values())[0] != '':
-                about_me.append(list(entry.values())[0])
-            else:
-                about_me.append('Information not available')
+            about_me.append(list(entry.values())[0])
+
 
 df['product details'] = product_details
 df['brand'] = brand
