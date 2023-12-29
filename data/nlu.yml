@@ -17,6 +17,14 @@ nlu:
     - goodevening
     - good afternoon
 
+- intent: start
+  examples: |
+    - start the bot
+    - begin
+    - start shopping
+    - start
+    - init
+
 - intent: goodbye
   examples: |
     - cu
@@ -57,21 +65,22 @@ nlu:
     - I would really like to buy a [shirt](category)
     - I really like [jacket](category)
 
-- intent: show_colors
-  examples: |
-    - what are the available colors?
-    - what colors?
-    - show me the available colors
-    - do they have it in [black](color)?
-    - is [caramel](color) color available?
-    - I would like it in [pink](color)
 
-- intent: price
-  examples: |
-    - maximum [49](money) dollars
-    - I'm poor, not more than [49.99](money) dollars
-    - I earned a lot of money this month, I can spend [1000.00](money) dollars
-    - I can only spend not more than [39](money) dollars
+# - intent: show_colors
+#  examples: |
+#    - what are the available colors?
+#    - what colors?
+#    - show me the available colors
+#    - do they have it in [black](color)?
+#    - is [caramel](color) color available?
+#    - I would like it in [pink](color)
+
+#- intent: price
+#  examples: |
+#    - maximum [49](money) dollars
+#    - I'm poor, not more than [49.99](money) dollars
+#    - I earned a lot of money this month, I can spend [1000.00](money) dollars
+#    - I can only spend not more than [39](money) dollars
 
 - intent: mood_great
   examples: |
@@ -113,4 +122,6 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+
+
 

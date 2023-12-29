@@ -30,6 +30,7 @@ class GetCategorie(Action):
         category = tracker.get_slot('category').lower()
 
         result = fashion_items[fashion_items['category'].str.lower().str.contains(category)]['category']
+        print('Result: '+result)
 
         if len(result) == 0:
             dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
@@ -40,15 +41,6 @@ class GetCategorie(Action):
 
             dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n "
                                           f"I will show you the first 5 fashion items that I think will fit you"+cat)
-
-
-        if len(result) == 0:
-            dispatcher.utter_message("Non ci sono categorie di prodotto!")
-        else:
-            cat = 'Le categorie di prodotti sono le seguenti: \n'
-            for elem in result:
-                cat = cat + f' - {elem[0]}\n'
-            dispatcher.utter_message(text=cat)
 
         return []
 
