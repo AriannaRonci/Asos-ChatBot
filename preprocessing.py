@@ -75,4 +75,4 @@ df['about me'] = about_me
 
 df = df.drop(columns=['description'])
 
-df.to_csv('dataset/product_asos_clean', header=True)
+df.to_csv('dataset/product_asos_clean.csv', header=True)

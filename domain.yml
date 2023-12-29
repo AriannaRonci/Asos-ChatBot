@@ -8,10 +8,37 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
+  - show_fashion_items
+  - show_colors
+  - prince
+
+
+entities:
+  - category
+  - color
+  - money
+
+slots:
+
+  category:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: category_form
+            requested_slot: category
+
 
 responses:
+
+  utter_start:
+    - text: "Hello, I'm ASOS-Bot. I'm here to help you pick your favourites fashion items. Start asking me what category
+             you are interested about and I will try to find something that suits you."
+
   utter_greet:
   - text: "Hey! How are you?"
+
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
@@ -28,6 +55,14 @@ responses:
 
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
+
+  utter_show_items:
+    - text: "What kind of fashion items are you interested in?"
+
+forms:
+  category_form:
+    required_slots:
+      - category
 
 session_config:
   session_expiration_time: 60

@@ -49,6 +49,30 @@ nlu:
     - no way
     - not really
 
+- intent: show_fashion_items
+  examples: |
+    - show me the [coats](category) available
+    - do you have any [blazer](category)?
+    - I'm interested in [skirts](category)
+    - I would really like to buy a [shirt](category)
+    - I really like [jacket](category)
+
+- intent: show_colors
+  examples: |
+    - what are the available colors?
+    - what colors?
+    - show me the available colors
+    - do they have it in [black](color)?
+    - is [caramel](color) color available?
+    - I would like it in [pink](color)
+
+- intent: price
+  examples: |
+    - maximum [49](money) dollars
+    - I'm poor, not more than [49.99](money) dollars
+    - I earned a lot of money this month, I can spend [1000.00](money) dollars
+    - I can only spend not more than [39](money) dollars
+
 - intent: mood_great
   examples: |
     - perfect
@@ -89,3 +113,4 @@ nlu:
     - are you a human?
     - am I talking to a bot?
     - am I talking to a human?
+

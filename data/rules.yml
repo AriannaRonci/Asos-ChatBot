@@ -7,6 +7,11 @@ rules:
   - intent: goodbye
   - action: utter_goodbye
 
+- rule: Start the conversation
+  steps:
+    - intent: start
+    - action: utter_start
+
 - rule: Say 'I am a bot' anytime the user challenges
   steps:
   - intent: bot_challenge
