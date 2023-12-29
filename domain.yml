@@ -34,12 +34,18 @@ slots:
 responses:
 
   utter_start:
-    - text: "Hello, I'm ASOS-Bot. I'm here to help you pick your favourites fashion items. Start asking me what category
+  - text: "Hello, I'm ASOS-Bot. I'm here to help you pick your favourites fashion items. Start asking me what category
              you are interested about and I will try to find something that suits you."
 
   utter_greet:
   - text: "Hey! How are you?"
 
+  utter_ask_category:
+  - text: "What kind of fashion items are you interested in?"
+
+
+  utter_fuck:
+    - text: 'Me so rotta'
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
@@ -57,8 +63,7 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-  utter_ask_category:
-    - text: "What kind of fashion items are you interested in?"
+
 
 forms:
   category_form:
@@ -67,8 +72,6 @@ forms:
 
 actions:
   - action_category
-  - utter_ask_category
-  - utter_start
 
 session_config:
   session_expiration_time: 60
