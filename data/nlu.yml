@@ -59,11 +59,12 @@ nlu:
 
 - intent: show_fashion_items
   examples: |
-    - show me the [coats](category) available
-    - do you have any [blazer](category)?
-    - I'm interested in [skirts](category)
-    - I would really like to buy a [shirt](category)
-    - I really like [jacket](category)
+    - I want to search by category
+#    - show me the [coats](category) available
+#    - do you have any [blazer](category)?
+#    - I'm interested in [skirts](category)
+#    - I would really like to buy a [shirt](category)
+#    - I really like [jacket](category)
 
 
 # - intent: show_colors

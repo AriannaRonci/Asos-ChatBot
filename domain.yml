@@ -57,8 +57,8 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
-#  utter_show_items:
-#    - text: "What kind of fashion items are you interested in?"
+  utter_ask_category:
+    - text: "What kind of fashion items are you interested in?"
 
 forms:
   category_form:
@@ -67,6 +67,8 @@ forms:
 
 actions:
   - action_category
+  - utter_ask_category
+  - utter_start
 
 session_config:
   session_expiration_time: 60

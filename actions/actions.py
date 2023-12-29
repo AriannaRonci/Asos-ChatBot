@@ -28,6 +28,7 @@ class GetCategorie(Action):
             domain: DomainDict):
 
         category = tracker.get_slot('category').lower()
+        print('cat'+category)
 
         result = fashion_items[fashion_items['category'].str.lower().str.contains(category)]['category']
         print('Result: '+result)
@@ -36,13 +37,13 @@ class GetCategorie(Action):
             dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
         else:
             cat = ''
-            for elem in result:
-                cat = cat + f' - {elem[0]}\n'
+            for elem in result.head(5):
+                cat = cat + f' - {elem}\n'
 
-            dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n "
-                                          f"I will show you the first 5 fashion items that I think will fit you"+cat)
+            dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
+                                          f"I will show you the first 5 fashion items that I think will fit you:\n"+cat)
 
-        return []
+        return [{"name": "category", "event": "slot", "value": None}]
 
 class ActionHelloWorld(Action):
 
