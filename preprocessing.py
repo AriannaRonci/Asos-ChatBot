@@ -75,4 +75,7 @@ df['about me'] = about_me
 
 df = df.drop(columns=['description'])
 
+df['sku'] = pd.to_numeric(df['sku'], downcast='integer')
+
+
 df.to_csv('dataset/product_asos_clean.csv', header=True)
