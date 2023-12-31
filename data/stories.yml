@@ -32,10 +32,73 @@ stories:
 - story: image path
   steps:
   - intent: visualize_product
-  - action: utter_ask_product
   - action: sku_form
   - active_loop: sku_form
   - slot_was_set:
     - requested_slot: sku
   - active_loop: null
   - action: action_visualize_product
+
+
+- story: product details
+  steps:
+    - intent: pick_item
+    - slot_was_set:
+      - requested_slot: sku
+    - action: action_sku
+    - intent: show_colors
+    - action: action_get_colors
+
+#- story: find item pattern
+#  steps:
+#    - intent: search_item
+#    - action: filter_form
+#    - active_loop: filter_form
+#    - slot_was_set:
+#        - requested_slot: category
+#    - slot_was_set:
+#        - requested_slot: price
+#    - slot_was_set:
+#        - requested_slot: size
+#    - active_loop: null
+#    - action: submit_filter
+#    - action: utter_goodbye
+
+
+- story: buy pattern
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: buy_item
+  - action: utter_ok
+  - action: item_form
+  - active_loop: item_form
+  - slot_was_set:
+    - requested_slot: sku
+  - slot_was_set:
+    - requested_slot: color
+  - slot_was_set:
+      - requested_slot: size
+  - active_loop: null
+  - action: utter_submit
+  - action: utter_item_slots
+  - action: submit_order
+  - intent: goodbye
+  - action: utter_goodbye
+
+
+- story: user skips the form
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: buy_item
+  - action: utter_ok
+  - action: item_form
+  - active_loop: item_form
+  - intent: stop
+  - action: utter_ask_continue
+  - or:
+    - intent: stop
+    - intent: affirm
+  - action: action_deactivate_loop
+  - active_loop: null

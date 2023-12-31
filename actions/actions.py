@@ -9,7 +9,10 @@
 
 from typing import Any, Text, Dict, List
 
-from rasa_sdk import Action, Tracker
+from rasa_sdk.events import SlotSet
+
+
+from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 
 import pandas as pd
@@ -17,34 +20,6 @@ from rasa_sdk.types import DomainDict
 
 fashion_items = pd.read_csv("dataset/product_asos_clean.csv")
 
-
-class GetCategorie(Action):
-    def name(self) -> Text:
-        return "action_category"
-
-    def run(
-            self,
-            dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: DomainDict):
-
-        category = tracker.get_slot('category').lower()
-        print('cat' + category)
-
-        result = fashion_items[fashion_items['category'].str.lower().str.contains(' ' + category + ' ')]['category']
-        print('Result: ' + result)
-
-        if len(result) == 0:
-            dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
-        else:
-            cat = ''
-            for elem in result.head(5):
-                cat = cat + f' - {elem}\n'
-
-            dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
-                                          f"I will show you the first 5 fashion items that I think will fit you:\n" + cat)
-
-        return [{"name": "category", "event": "slot", "value": None}]
 
 
 class ActionVisualizeProduct(Action):
@@ -74,14 +49,197 @@ class ActionVisualizeProduct(Action):
         return [{"name": "sku", "event": "slot", "value": None}]
 
 
-class ActionHelloWorld(Action):
 
+class GetInfoBySku(Action):
     def name(self) -> Text:
-        return "action_hello_world"
+        return "action_sku"
 
-    def run(self, dispatcher: CollectingDispatcher,
+    def run(
+            self,
+            dispatcher: CollectingDispatcher,
             tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(text="Hello World!")
+            domain: DomainDict):
+
+        try:
+            sku = tracker.latest_message['entities'][0]['value']
+            result = fashion_items[fashion_items['sku'].astype(str) == str(sku)]
+
+            if len(result) == 0:
+                dispatcher.utter_message("Sorry, the sku code you chose is not valid.")
+            else:
+                link = str(result['url'].iloc[0])
+                image = result['image'].iloc[0]
+
+                text = "You can have more information about the fashion item you picked in the website.\n" \
+                       "Try and visit the url: " + link + "\n" \
+                                                          "By the way you have a really good taste in terms of fashion:"
+
+                dispatcher.utter_message(text=text, image=image)
+                dispatcher.utter_message("You can ask me to find you a specific color")
+        except:
+            dispatcher.utter_message("Sorry, the sku code you chose is not valid.")
 
         return []
+
+
+class GetColors(Action):
+    def name(self) -> Text:
+        return "action_get_colors"
+
+    def run(
+            self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict):
+
+
+        try:
+            sku = tracker.get_slot('sku').lower()
+            print('sku' + sku + str(type(sku)))
+            color = tracker.latest_message['entities'][0]['value']
+            print('color'+color + str(type(color)))
+
+            result = fashion_items.loc[(fashion_items['sku'] == int(sku)) & (fashion_items['color'] == str(color))]
+
+            if len(result) == 0:
+                text = "Sorry, this color is not available\n" \
+                      "The available colors are: " + fashion_items[fashion_items['sku'] == int(sku)]['color'].iloc[0]
+                dispatcher.utter_message(text=text)
+            else:
+                dispatcher.utter_message("Nice choice, this color is available")
+        except:
+            print('sono dentro except')
+            text = "Sorry, this color is not available\n" \
+                  "The available colors are: " + fashion_items[fashion_items['sku'] == int(sku)]['color'].iloc[0]
+            dispatcher.utter_message(text=text)
+            return {"name": "sku", "event": "slot", "value": None}
+
+        print('sono fuori da except')
+        return {"name": "sku", "event": "slot", "value": None}
+
+
+
+class ValidateItemForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_item_form"
+
+
+    def validate_sku(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict):
+
+        print('sono dentro validate sku')
+        sku = tracker.get_slot('sku')
+        result = fashion_items[fashion_items['sku'].astype(str) == str(sku)]
+
+        if len(result) == 0:
+            dispatcher.utter_message(text="The sku code is not valid")
+            return {'sku': None}
+        else:
+            dispatcher.utter_message(text=f'Ok, you chose to buy the fashion item {sku}')
+            return {'sku': sku}
+
+    def validate_color(
+            self,
+            slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict):
+
+        print('sono dentro validate color')
+
+        color = tracker.get_slot('color')
+        sku = tracker.get_slot('sku').lower()
+        print('sku'+sku)
+        print('color' + color)
+
+        result = fashion_items.loc[(fashion_items['sku'] == int(sku))]
+
+        print(result)
+
+        if color not in result['color'].iloc[0]:
+            dispatcher.utter_message(text="This color is not available for this fashion item")
+            dispatcher.utter_message(text="The colors available for this item are: " + result['color'].iloc[0])
+            return {"color": None}
+        dispatcher.utter_message(text=f"Ok, you chose the color {color} for this fashion item")
+        return {"color": color}
+
+    def validate_size(
+        self,
+        slot_value: Any,
+        dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: DomainDict):
+
+        size = tracker.get_slot('size')
+        sku = tracker.get_slot('sku').lower()
+
+        print('sono dentro validate size')
+
+        result = fashion_items.loc[(fashion_items['sku'] == int(sku))]
+
+        if size not in result['size'].iloc[0]:
+            dispatcher.utter_message(text="This size is not available for this fashion item")
+            validStr = ''
+            dispatcher.utter_message(text="The size available for this item are: "+result['size'].iloc[0])
+            return {"size": None}
+        dispatcher.utter_message(text=f"Ok, you chose the size {size} for this fashion item")
+        return {"size": size}
+
+
+class SubmitAcquisto(FormValidationAction):
+    def name(self) -> Text:
+        return "submit_order"
+
+    def run(self,
+            # slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        print('sono dentro submit acquisto')
+        sku = tracker.get_slot('sku')
+
+        url = fashion_items.loc[(fashion_items['sku'] == int(sku))]['url'].iloc[0]
+        price = fashion_items.loc[(fashion_items['sku'] == int(sku))]['price'].iloc[0]
+
+        message = "To buy it press this link and follow its instructions " + url + ".\nIt will cost you " + price + \
+                  " dollars."
+        dispatcher.utter_message(text=message)
+
+        return [{"name": "sku", "event": "slot", "value": None},
+                {"name": "color", "event": "slot", "value": None},
+                {"name": "size", "event": "slot", "value": None}]
+
+class GetCategorie(Action):
+    def name(self) -> Text:
+        return "action_category"
+
+    def run(
+            self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict):
+
+        category = tracker.get_slot('category').lower()
+        print('cat' + category)
+
+        result = fashion_items[fashion_items['category'].str.lower().str.contains(category)]
+
+        result = result[['category', 'sku', 'url']]
+        if len(result) == 0:
+            dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
+        else:
+            cat = ''
+            for ind in result.head(5).index:
+                cat = cat + f' - ' + str(int(result["sku"][ind])) + ': ' + result["category"][ind] + '\n'
+
+            dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
+                                          f"I will show you up to 5 fashion items that I think will fit you:\n" + cat +
+                                          "\n\n If you want, ask me more about a specific item by specifying its "
+                                          "sku code")
+
+        return [{"name": "category", "event": "slot", "value": None}]

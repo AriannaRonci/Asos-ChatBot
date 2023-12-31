@@ -60,6 +60,8 @@ nlu:
 - intent: show_fashion_items
   examples: |
     - I want to search by category
+    - search by category
+    - Show me the available categories
 #    - show me the [coats](category) available
 #    - do you have any [blazer](category)?
 #    - I'm interested in [skirts](category)
@@ -75,14 +77,14 @@ nlu:
     - Show me the image for a specific product
 
 
-# - intent: show_colors
-#  examples: |
-#    - what are the available colors?
-#    - what colors?
-#    - show me the available colors
-#    - do they have it in [black](color)?
-#    - is [caramel](color) color available?
-#    - I would like it in [pink](color)
+- intent: show_colors
+  examples: |
+    - what are the available colors?
+    - what colors?
+    - show me the available colors
+    - do they have it in [black](color)?
+    - is [caramel](color) color available?
+    - I would like it in [pink](color)
 
 #- intent: price
 #  examples: |
@@ -90,6 +92,13 @@ nlu:
 #    - I'm poor, not more than [49.99](money) dollars
 #    - I earned a lot of money this month, I can spend [1000.00](money) dollars
 #    - I can only spend not more than [39](money) dollars
+
+- intent: pick_item
+  examples: |
+    - I'm interested in [116843617](sku)
+    - I would like to know more about [123148968](sku)
+    - [113445765](sku) seems great
+    - let's see [1550633](sku)
 
 - intent: mood_great
   examples: |
@@ -132,5 +141,32 @@ nlu:
     - am I talking to a bot?
     - am I talking to a human?
 
+- regex: sku
+  examples: |
+    - '[0-9]+'
+
+
+- intent: buy_item
+  examples: |
+    - I want to buy a product
+    - buy a product
+    - I'd like to make a purchase
+    - buy an item
+    - I'd like to spend my money on an item
+    - I really like one item, can I buy it?
+
+- intent: stop
+  examples: |
+    - quit
+    - close
+    - kill
+    - close the form
+    - I changed my mind
+
+- intent: search_item
+  examples: |
+    - I want to see what's in your catalogue
+    - I want to filter products in your catalogue
+    - find a product for me
 
 

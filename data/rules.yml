@@ -26,3 +26,36 @@ rules:
       - requested_slot: category
     - active_loop: null
     - action: action_category
+
+
+
+- rule: product details
+  steps:
+    - intent: pick_item
+    - action: action_sku
+
+- rule: activate item form
+  steps:
+  - intent: buy_item
+  - action: utter_ok
+  - action: item_form
+  - active_loop: item_form
+  - slot_was_set:
+    - requested_slot: sku
+  - slot_was_set:
+    - requested_slot: color
+  - slot_was_set:
+      - requested_slot: size
+  - active_loop: null
+  - action: utter_submit
+  - action: utter_item_slots
+  - action: submit_order
+
+- rule: deactivate item form
+  condition:
+  - active_loop: item_form
+  steps:
+  - intent: bot_challenge
+  - action: utter_iamabot
+  - action: item_form
+  - active_loop: item_form

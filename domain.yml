@@ -9,17 +9,22 @@ intents:
   - mood_unhappy
   - bot_challenge
   - show_fashion_items
-  # - show_colors
+  - show_colors
   # - price
   - start
   - visualize_product
+  - pick_item
+  - buy_item
+  - stop
+  - search_item
 
 
 entities:
   - category
   - color
-  - money
   - sku
+  - size
+  - price
 
 slots:
 
@@ -31,6 +36,8 @@ slots:
         conditions:
           - active_loop: category_form
             requested_slot: category
+          #- active_loop: filter_form
+          #  requested_slot: price
 
   sku:
     type: float
@@ -40,6 +47,40 @@ slots:
         conditions:
           - active_loop: sku_form
             requested_slot: sku
+          - active_loop: search_sku_form
+            requested_slot: sku
+          - active_loop: item_form
+            requested_slot: sku
+
+
+  color:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: item_form
+            requested_slot: color
+
+  size:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: item_form
+            requested_slot: size
+          #- active_loop: filter_form
+          #  requested_slot: price
+
+  price:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        #conditions:
+          #- active_loop: filter_form
+          #  requested_slot: price
 
 
 responses:
@@ -54,15 +95,15 @@ responses:
   utter_ask_category:
   - text: "What kind of fashion items are you interested in?"
 
-  utter_ask_product:
-  - text: "Which product do you want to see? Tell me the SKU code"
-
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
     image: "https://i.imgur.com/nGF1K8f.jpg"
 
   utter_did_that_help:
   - text: "Did that help you?"
+
+  utter_ok:
+    - text: "Ok, let's help you buy a fashion item."
 
   utter_happy:
   - text: "Great, carry on!"
@@ -73,7 +114,23 @@ responses:
   utter_iamabot:
   - text: "I am a bot, powered by Rasa."
 
+  utter_submit:
+    - text: "Ok, I will search this product for you."
 
+  utter_item_slots:
+    - text: "Ok, you can order {sku} in {color} of size {size}."
+
+  utter_ask_sku:
+    - text: "Which product are you interested in? Tell me the SKU code"
+
+  utter_ask_color:
+    - text: "Ok, what color would you pick."
+
+  utter_ask_size:
+    - text: "Now, tell me your size."
+
+  utter_ask_continue:
+    - text: "Are you sure you want to quit this form?"
 
 forms:
   category_form:
@@ -84,10 +141,32 @@ forms:
     required_slots:
       - sku
 
+  search_sku_form:
+    required_slots:
+      - sku
+  item_form:
+    required_slots:
+      - sku
+      - color
+      - size
+  #filter_form:
+  #  required_slots:
+  #    - category
+  #    - size
+  #    - price
+
 actions:
   - action_category
   - action_visualize_product
-  - utter_ask_product
+  - action_sku
+  - action_get_colors
+  - validate_item_form
+  - submit_order
+  - utter_ask_continue
+  - utter_ask_sku
+  - utter_ask_color
+  - utter_ask_size
+
 
 session_config:
   session_expiration_time: 60
