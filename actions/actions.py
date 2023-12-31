@@ -39,15 +39,17 @@ class ActionVisualizeProduct(Action):
         result = fashion_items[fashion_items['sku'].astype(float) == float(sku)]
 
         if len(result) == 0:
-            dispatcher.utter_message(f"Sorry, the SKU code you chose is not valid.")
+            dispatcher.utter_message(f"Sorry, the sku code you chose is not valid.")
         else:
             image_url = result['image'].iloc[0]
+            title = result['category'].iloc[0]
+            string = "Here is the image for the product with sku " + sku
 
-            dispatcher.utter_message(text=f"Here is the image for the product with SKU {sku}.")
+            dispatcher.utter_message(text=string)
+            dispatcher.utter_message(text=title)
             dispatcher.utter_message(image=image_url)
 
         return [{"name": "sku", "event": "slot", "value": None}]
-
 
 
 class GetInfoBySku(Action):
