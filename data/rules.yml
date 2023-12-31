@@ -19,20 +19,13 @@ rules:
 
 - rule: category path
   steps:
-    - intent: show_fashion_items
+    - intent: show_category_fashion_items
     - action: category_form
     - active_loop: category_form
     - slot_was_set:
       - requested_slot: category
     - active_loop: null
     - action: action_category
-
-
-
-- rule: product details
-  steps:
-    - intent: pick_item
-    - action: action_sku
 
 - rule: activate item form
   steps:

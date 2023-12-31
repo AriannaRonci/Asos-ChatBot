@@ -8,7 +8,7 @@ intents:
   - mood_great
   - mood_unhappy
   - bot_challenge
-  - show_fashion_items
+  - show_category_fashion_items
   - show_colors
   # - price
   - start
@@ -17,6 +17,7 @@ intents:
   - buy_item
   - stop
   - search_item
+  - show_details
 
 
 entities:
@@ -51,6 +52,8 @@ slots:
             requested_slot: sku
           - active_loop: item_form
             requested_slot: sku
+          - active_loop: sku_color_form
+            requested_slot: sku
 
 
   color:
@@ -60,6 +63,8 @@ slots:
       - type: from_text
         conditions:
           - active_loop: item_form
+            requested_slot: color
+          - active_loop: sku_color_form
             requested_slot: color
 
   size:
@@ -121,10 +126,10 @@ responses:
     - text: "Ok, you can order {sku} in {color} of size {size}."
 
   utter_ask_sku:
-    - text: "Which product are you interested in? Tell me the SKU code"
+    - text: "Which product are you interested in? Tell me the sku code"
 
   utter_ask_color:
-    - text: "Ok, what color would you pick."
+    - text: "Ok, what color would you pick?"
 
   utter_ask_size:
     - text: "Now, tell me your size."
@@ -149,6 +154,10 @@ forms:
       - sku
       - color
       - size
+  sku_color_form:
+    required_slots:
+      - sku
+      - color
   #filter_form:
   #  required_slots:
   #    - category
@@ -166,6 +175,8 @@ actions:
   - utter_ask_sku
   - utter_ask_color
   - utter_ask_size
+  - submit_details
+  - validate_sku_color_form
 
 
 session_config:

@@ -42,27 +42,18 @@ stories:
 
 - story: product details
   steps:
-    - intent: pick_item
+    - intent: show_details
+    - action: sku_color_form
+    - active_loop: sku_color_form
     - slot_was_set:
       - requested_slot: sku
-    - action: action_sku
-    - intent: show_colors
-    - action: action_get_colors
+    - slot_was_set:
+        - requested_slot: color
+    - active_loop: null
+    - action: submit_details
+    - intent: goodbye
+    - action: utter_goodbye
 
-#- story: find item pattern
-#  steps:
-#    - intent: search_item
-#    - action: filter_form
-#    - active_loop: filter_form
-#    - slot_was_set:
-#        - requested_slot: category
-#    - slot_was_set:
-#        - requested_slot: price
-#    - slot_was_set:
-#        - requested_slot: size
-#    - active_loop: null
-#    - action: submit_filter
-#    - action: utter_goodbye
 
 
 - story: buy pattern
@@ -85,6 +76,21 @@ stories:
   - action: submit_order
   - intent: goodbye
   - action: utter_goodbye
+
+#- story: find item pattern
+#  steps:
+#    - intent: search_item
+#    - action: filter_form
+#    - active_loop: filter_form
+#    - slot_was_set:
+#        - requested_slot: category
+#    - slot_was_set:
+#        - requested_slot: price
+#    - slot_was_set:
+#        - requested_slot: size
+#    - active_loop: null
+#    - action: submit_filter
+#    - action: utter_goodbye
 
 
 - story: user skips the form
