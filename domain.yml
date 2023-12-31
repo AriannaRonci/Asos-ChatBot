@@ -12,12 +12,14 @@ intents:
   # - show_colors
   # - price
   - start
+  - visualize_product
 
 
 entities:
   - category
   - color
   - money
+  - sku
 
 slots:
 
@@ -29,6 +31,15 @@ slots:
         conditions:
           - active_loop: category_form
             requested_slot: category
+
+  sku:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: sku_form
+            requested_slot: sku
 
 
 responses:
@@ -43,9 +54,8 @@ responses:
   utter_ask_category:
   - text: "What kind of fashion items are you interested in?"
 
-
-  utter_fuck:
-    - text: 'Me so rotta'
+  utter_ask_product:
+  - text: "Which product do you want to see? Tell me the SKU code"
 
   utter_cheer_up:
   - text: "Here is something to cheer you up:"
@@ -70,8 +80,14 @@ forms:
     required_slots:
       - category
 
+  sku_form:
+    required_slots:
+      - sku
+
 actions:
   - action_category
+  - action_visualize_product
+  - utter_ask_product
 
 session_config:
   session_expiration_time: 60

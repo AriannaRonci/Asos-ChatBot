@@ -17,6 +17,7 @@ from rasa_sdk.types import DomainDict
 
 fashion_items = pd.read_csv("dataset/product_asos_clean.csv")
 
+
 class GetCategorie(Action):
     def name(self) -> Text:
         return "action_category"
@@ -28,10 +29,10 @@ class GetCategorie(Action):
             domain: DomainDict):
 
         category = tracker.get_slot('category').lower()
-        print('cat'+category)
+        print('cat' + category)
 
-        result = fashion_items[fashion_items['category'].str.lower().str.contains(category)]['category']
-        print('Result: '+result)
+        result = fashion_items[fashion_items['category'].str.lower().str.contains(' ' + category + ' ')]['category']
+        print('Result: ' + result)
 
         if len(result) == 0:
             dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
@@ -41,19 +42,46 @@ class GetCategorie(Action):
                 cat = cat + f' - {elem}\n'
 
             dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
-                                          f"I will show you the first 5 fashion items that I think will fit you:\n"+cat)
+                                          f"I will show you the first 5 fashion items that I think will fit you:\n" + cat)
 
         return [{"name": "category", "event": "slot", "value": None}]
 
+
+class ActionVisualizeProduct(Action):
+    def name(self) -> Text:
+        return "action_visualize_product"
+
+
+    def run(
+            self,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict):
+
+        sku = tracker.get_slot('sku').lower()
+        print('sku:' + sku)
+
+        result = fashion_items[fashion_items['sku'].astype(float) == float(sku)]
+
+        if len(result) == 0:
+            dispatcher.utter_message(f"Sorry, the SKU code you chose is not valid.")
+        else:
+            image_url = result['image'].iloc[0]
+
+            dispatcher.utter_message(text=f"Here is the image for the product with SKU {sku}.")
+            dispatcher.utter_message(image=image_url)
+
+        return [{"name": "sku", "event": "slot", "value": None}]
+
+
 class ActionHelloWorld(Action):
 
-     def name(self) -> Text:
-         return "action_hello_world"
+    def name(self) -> Text:
+        return "action_hello_world"
 
-     def run(self, dispatcher: CollectingDispatcher,
-             tracker: Tracker,
-             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        dispatcher.utter_message(text="Hello World!")
 
-         dispatcher.utter_message(text="Hello World!")
-
-         return []
+        return []

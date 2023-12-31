@@ -28,3 +28,14 @@ stories:
   - action: utter_did_that_help
   - intent: deny
   - action: utter_goodbye
+
+- story: image path
+  steps:
+  - intent: visualize_product
+  - action: utter_ask_product
+  - action: sku_form
+  - active_loop: sku_form
+  - slot_was_set:
+    - requested_slot: sku
+  - active_loop: null
+  - action: action_visualize_product

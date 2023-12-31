@@ -66,6 +66,14 @@ nlu:
 #    - I would really like to buy a [shirt](category)
 #    - I really like [jacket](category)
 
+- intent: visualize_product
+  examples: |
+    - Show me the image of a product
+    - Could you show me a picture of a fashion item?
+    - Display the product image, please
+    - I'd like to see a product's image
+    - Show me the image for a specific product
+
 
 # - intent: show_colors
 #  examples: |
