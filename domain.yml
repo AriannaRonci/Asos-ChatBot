@@ -10,14 +10,15 @@ intents:
   - bot_challenge
   - show_category_fashion_items
   - show_colors
-  # - price
   - start
   - visualize_product
   - pick_item
   - buy_item
   - stop
-  - search_item
   - show_details
+  - wash_details
+  - fabric_details
+  - search_item
 
 
 entities:
@@ -25,7 +26,9 @@ entities:
   - color
   - sku
   - size
-  - price
+  - category_slot
+  - price_slot
+  - size_slot
 
 slots:
 
@@ -37,8 +40,17 @@ slots:
         conditions:
           - active_loop: category_form
             requested_slot: category
-          #- active_loop: filter_form
-          #  requested_slot: price
+
+
+  category_slot:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: filter_form
+            requested_slot: category_slot
+
 
   sku:
     type: float
@@ -75,17 +87,28 @@ slots:
         conditions:
           - active_loop: item_form
             requested_slot: size
-          #- active_loop: filter_form
-          #  requested_slot: price
 
-  price:
+
+
+  size_slot:
     type: text
     influence_conversation: true
     mappings:
       - type: from_text
-        #conditions:
-          #- active_loop: filter_form
-          #  requested_slot: price
+        conditions:
+          - active_loop: filter_form
+            requested_slot: size_slot
+
+  price_slot:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: filter_form
+            requested_slot: price_slot
+
+
 
 
 responses:
@@ -137,6 +160,11 @@ responses:
   utter_ask_continue:
     - text: "Are you sure you want to quit this form?"
 
+  utter_category:
+    - text: "What's your favourite category? You can tell me to skip this question by "
+                "typing 'skip'."
+
+
 forms:
   category_form:
     required_slots:
@@ -158,11 +186,11 @@ forms:
     required_slots:
       - sku
       - color
-  #filter_form:
-  #  required_slots:
-  #    - category
-  #    - size
-  #    - price
+  filter_form:
+    required_slots:
+      - category_slot
+      - price_slot
+      - size_slot
 
 actions:
   - action_category
@@ -177,6 +205,10 @@ actions:
   - utter_ask_size
   - submit_details
   - validate_sku_color_form
+  - get_wash_details
+  - get_fabric_details
+  - validate_filter_form
+  - submit_filter
 
 
 session_config:

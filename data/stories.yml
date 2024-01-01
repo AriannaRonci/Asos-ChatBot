@@ -39,6 +39,15 @@ stories:
   - active_loop: null
   - action: action_visualize_product
 
+- story: product wash
+  steps:
+    - intent: wash_details
+    - action: get_wash_details
+
+- story: product fabric
+  steps:
+    - intent: fabric_details
+    - action: get_fabric_details
 
 - story: product details
   steps:
@@ -54,7 +63,21 @@ stories:
     - intent: goodbye
     - action: utter_goodbye
 
-
+- story: search item pattern
+  steps:
+    - intent: search_item
+    - action: utter_category
+    - action: filter_form
+    - active_loop: filter_form
+    - slot_was_set:
+        - requested_slot: category_slot
+    - slot_was_set:
+        - requested_slot: price_slot
+    - slot_was_set:
+        - requested_slot: size_slot
+    - active_loop: null
+    - action: submit_filter
+    - action: utter_goodbye
 
 - story: buy pattern
   steps:

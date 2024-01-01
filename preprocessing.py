@@ -77,5 +77,7 @@ df = df.drop(columns=['description'])
 
 df['sku'] = pd.to_numeric(df['sku'], downcast='integer')
 
+df['price'] = df['price'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna()
+df = df.dropna()
 
 df.to_csv('dataset/product_asos_clean.csv', header=True)

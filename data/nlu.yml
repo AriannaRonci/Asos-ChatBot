@@ -163,11 +163,6 @@ nlu:
     - close the form
     - I changed my mind
 
-- intent: search_item
-  examples: |
-    - I want to see what's in your catalogue
-    - I want to filter products in your catalogue
-    - find a product for me
 
 - intent: show_details
   examples: |
@@ -178,4 +173,24 @@ nlu:
     - details
     - specific fashion item
 
+- intent: wash_details
+  examples: |
+    - how can I take care of [116843849](sku)?
+    - how do I wash [116843849](sku) item?
+    - show washing details of [116843849](sku) item
+    - washing details
+    - how do I wash
+    - take care
 
+- intent: fabric_details
+  examples: |
+    - what is [116843849](sku) item made of?
+    - what are the fabric details about [116843849](sku) item?
+    - tell me what [116843849](sku) is made of
+    - fabric details
+
+- intent: search_item
+  examples: |
+    - I want to see what's in your catalogue
+    - I want to filter products in your catalogue
+    - find a product for me
