@@ -61,20 +61,18 @@ nlu:
   examples: |
     - I want to search by category
     - search by category
-    - Show me the available categories
-#    - show me the [coats](category) available
-#    - do you have any [blazer](category)?
-#    - I'm interested in [skirts](category)
-#    - I would really like to buy a [shirt](category)
-#    - I really like [jacket](category)
+    - show me the available categories
+    - I'm interested in exploring categories
+    - can you display me the fashion item categories?
+    - I'd like to see the list of categories
 
 - intent: visualize_product
   examples: |
-    - Show me the image of a product
-    - Could you show me a picture of a fashion item?
-    - Display the product image, please
+    - show me the image of a product
+    - could you show me a picture of a fashion item?
+    - display the product image, please
     - I'd like to see a product's image
-    - Show me the image for a specific product
+    - show me the image for a specific product
 
 
 - intent: show_colors
@@ -85,13 +83,6 @@ nlu:
     - do they have it in [black](color)?
     - is [caramel](color) color available?
     - I would like it in [pink](color)
-
-#- intent: price
-#  examples: |
-#    - maximum [49](money) dollars
-#    - I'm poor, not more than [49.99](money) dollars
-#    - I earned a lot of money this month, I can spend [1000.00](money) dollars
-#    - I can only spend not more than [39](money) dollars
 
 - intent: pick_item
   examples: |

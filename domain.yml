@@ -114,8 +114,10 @@ slots:
 responses:
 
   utter_start:
-  - text: "Hello, I'm ASOS-Bot. I'm here to help you pick your favourites fashion items. Start asking me what category
-             you are interested about and I will try to find something that suits you."
+  - text: "Hello, I'm ASOS-Bot. I'm here to help you pick your favourites fashion items. You can ask me to search for a 
+           fashion item by telling me your fashion taste. I can also provide you with some specific information about 
+           your favourite items and I can order an item for you. If you are not sure about the description of an item, 
+           you can ask me to show it. Start shopping in my catalogue, I will find something that suits you."
 
   utter_greet:
   - text: "Hey! How are you?"
@@ -149,7 +151,7 @@ responses:
     - text: "Ok, you can order {sku} in {color} of size {size}."
 
   utter_ask_sku:
-    - text: "Which product are you interested in? Tell me the sku code"
+    - text: "Which product are you interested in? Tell me the sku code."
 
   utter_ask_color:
     - text: "Ok, what color would you pick?"
