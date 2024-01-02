@@ -100,21 +100,6 @@ stories:
   - intent: goodbye
   - action: utter_goodbye
 
-#- story: find item pattern
-#  steps:
-#    - intent: search_item
-#    - action: filter_form
-#    - active_loop: filter_form
-#    - slot_was_set:
-#        - requested_slot: category
-#    - slot_was_set:
-#        - requested_slot: price
-#    - slot_was_set:
-#        - requested_slot: size
-#    - active_loop: null
-#    - action: submit_filter
-#    - action: utter_goodbye
-
 
 - story: user skips the form
   steps:

@@ -9,8 +9,6 @@
 
 from typing import Any, Text, Dict, List
 
-from rasa_sdk.events import SlotSet
-
 from rasa_sdk import Action, Tracker, FormValidationAction
 from rasa_sdk.executor import CollectingDispatcher
 
@@ -206,7 +204,8 @@ class SubmitAcquisto(FormValidationAction):
         url = fashion_items.loc[(fashion_items['sku'] == int(sku))]['url'].iloc[0]
         price = fashion_items.loc[(fashion_items['sku'] == int(sku))]['price'].iloc[0]
 
-        message = "To buy it press this link and follow its instructions " + str(url) + ".\nIt will cost you " + str(price) + \
+        message = "To buy it press this link and follow its instructions " + str(url) + ".\nIt will cost you " + str(
+            price) + \
                   " dollars."
         dispatcher.utter_message(text=message)
 
@@ -266,12 +265,11 @@ class GetWashDetails(Action):
             if len(result) == 0:
                 dispatcher.utter_message("This fashion item does not exist.")
             else:
-                string = f"The washing details about this product are: " + result['look after me'].iloc[0]
+                string = str(result['look after me'].iloc[0])
                 dispatcher.utter_message(text=string)
                 return [{"name": "sku", "event": "slot", "value": None}]
         except:
             dispatcher.utter_message("You must specify a fashion item.")
-
 
 
 class GetFabricDetails(Action):
@@ -284,7 +282,6 @@ class GetFabricDetails(Action):
             tracker: Tracker,
             domain: DomainDict):
 
-
         try:
             sku = tracker.latest_message['entities'][0]['value']
             result = fashion_items[fashion_items['sku'].astype(str) == str(sku)]
@@ -292,7 +289,7 @@ class GetFabricDetails(Action):
             if len(result) == 0:
                 dispatcher.utter_message("This fashion item does not exist.")
             else:
-                string = f"The fabric details about this item are: " + result['about me'].iloc[0]
+                string = str(result['about me'].iloc[0])
                 dispatcher.utter_message(text=string)
                 return [{"name": "sku", "event": "slot", "value": None}]
         except:
@@ -512,7 +509,8 @@ class SubmitFilter(FormValidationAction):
         else:
             items = ''
             for ind in result.head(5).index:
-                items = items + f' - ' + str(int(result["sku"][ind])) + ': ' + result["category"][ind] + '\n'
+                items = items + f' - ' + str(int(result["sku"][ind])) + ': ' + result["category"][ind] + \
+                        ', ' + str(result['price'][ind]) + '$\n'
             dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
                                           f"I will show you up to 5 fashion items that I think will fit you:\n" + items +
                                           "\n\nIf you want, ask me more about a specific item by specifying its "
@@ -521,5 +519,3 @@ class SubmitFilter(FormValidationAction):
         return [{"name": "category_slot", "event": "slot", "value": None},
                 {"name": "size_slot", "event": "slot", "value": None},
                 {"name": "price_slot", "event": "slot", "value": None}]
-
-

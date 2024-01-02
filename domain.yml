@@ -161,8 +161,7 @@ responses:
     - text: "Are you sure you want to quit this form?"
 
   utter_category:
-    - text: "What's your favourite category? You can tell me to skip this question by "
-                "typing 'skip'."
+    - text: "What's your favourite category? You can tell me to skip this question by typing 'skip'."
 
 
 forms:
