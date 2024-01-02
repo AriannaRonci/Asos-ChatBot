@@ -29,8 +29,17 @@ entities:
   - category_slot
   - price_slot
   - size_slot
+  - others
+  - count
 
 slots:
+
+  count:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: count
 
   category:
     type: text
@@ -41,6 +50,14 @@ slots:
           - active_loop: category_form
             requested_slot: category
 
+  others:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        conditions:
+          - active_loop: category_form
+            requested_slot: others
 
   category_slot:
     type: text
@@ -165,11 +182,15 @@ responses:
   utter_category:
     - text: "What's your favourite category? You can tell me to skip this question by typing 'skip'."
 
+  utter_ask_others:
+    - text: "Do you want me to show other results? Type 'yes' or 'no'."
+
 
 forms:
   category_form:
     required_slots:
       - category
+      - others
 
   sku_form:
     required_slots:
@@ -195,6 +216,7 @@ forms:
 
 actions:
   - action_category
+  - validate_category_form
   - action_visualize_product
   - action_sku
   - action_get_colors

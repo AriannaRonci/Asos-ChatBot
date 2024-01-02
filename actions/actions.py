@@ -14,6 +14,7 @@ from rasa_sdk.executor import CollectingDispatcher
 
 import pandas as pd
 from rasa_sdk.types import DomainDict
+from rasa_sdk.events import SlotSet
 
 fashion_items = pd.read_csv("dataset/product_asos_clean.csv")
 
@@ -221,7 +222,67 @@ class SubmitAcquisto(FormValidationAction):
                 {"name": "size", "event": "slot", "value": None}]
 
 
-class GetCategorie(Action):
+class ValidateActionCategory(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_category_form"
+
+    def validate_category(
+            self,
+            slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict):
+
+        print('validate category')
+        result = fashion_items[fashion_items['category'].str.lower().str.contains(slot_value)]
+
+        if len(result) == 0:
+            dispatcher.utter_message("This category is not available in my catalogue." +
+                                     "\n")
+            return {'category': 'no'}
+        else:
+            cat = ''
+            res = result.head(5)
+            for ind in res.index:
+                cat = cat + f' - ' + str(int(result["sku"][ind])) + ': ' + res["category"][ind] + '.\n'
+            dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
+                                          f"I will show you up to 5 fashion items that I think will fit you:\n" + cat
+                                          + "\nIf you want to know more about some of these fashion items just tell me "
+                                            "'I want to know more about a specific fashion item'.")
+            count_value = '5'
+            return {'category': slot_value, 'count': '5'}
+
+    def validate_others(
+            self,
+            slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict):
+        print('dentro validate others')
+        category = tracker.get_slot('category')
+        result = fashion_items[fashion_items['category'].str.lower().str.contains(category)].iloc[5:]
+        print('count' + tracker.get_slot('count'))
+
+        if slot_value == 'yes' and len(result) >= 5:
+            print('slot value yes')
+            print(slot_value)
+            cat = ''
+            res = result.iloc[int(tracker.get_slot("count")):int(tracker.get_slot("count")) + 5]
+            for ind in res.index:
+                cat = cat + f' - ' + str(int(result["sku"][ind])) + ': ' + res["category"][ind] + '.\n'
+            dispatcher.utter_message(text=f"I will show you up to other 5 fashion items that I think will fit you:\n" +
+                                          cat)
+            count = int(tracker.get_slot('count')) + 5
+            return {'others': None, 'count': str(count)}
+        elif slot_value == 'yes' and len(result) <= 5:
+            dispatcher.utter_message(text="No more available items.")
+            return {'others': 'no', 'count': None}
+        if slot_value == 'no':
+            print('slot value no')
+            return {'others': 'no', 'count': None}
+
+
+class GetCategorie(FormValidationAction):
     def name(self) -> Text:
         return "action_category"
 
@@ -239,18 +300,17 @@ class GetCategorie(Action):
         result = result[['category', 'sku', 'url']]
         if len(result) == 0:
             dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
-        else:
-            cat = ''
-            res = result.sample(n=5)
-            for ind in res.index:
-                cat = cat + f' - ' + str(int(result["sku"][ind])) + ': ' + res["category"][ind] + '.\n'
 
-            dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
-                                          f"I will show you up to 5 fashion items that I think will fit you:\n" + cat
-                                          + "\nIf you want to know more about some of these fashion items just tell me "
-                                            "'I want to know more about a specific fashion item'.")
+        if tracker.get_slot('others').lower() == 'no':
+            dispatcher.utter_message(text="If you want to know more about some of these fashion items just tell me "
+                                          "'I want to know more about a specific fashion item'.")
+            return [{"name": "category", "event": "slot", "value": None},
+                    {"name": "others", "event": "slot", "value": None}]
 
-        return [{"name": "category", "event": "slot", "value": None}]
+        dispatcher.utter_message("If you want to know more about some of these fashion items just tell me "
+                                 "'I want to know more about a specific fashion item'.")
+        return [{"name": "category", "event": "slot", "value": None},
+                {"name": "others", "event": "slot", "value": None}]
 
 
 class GetWashDetails(Action):
@@ -372,7 +432,7 @@ class SubmitDetails(FormValidationAction):
         price = str(result['price'].iloc[0])
 
         text = "This item will cost you " + price + " dollars.\nYou can have more information about the " \
-                                                    "fashion item you picked in the website.\nTry and visit the url: "\
+                                                    "fashion item you picked in the website.\nTry and visit the url: " \
                + link + "\nBy the way you have a really good taste in terms of fashion:"
 
         dispatcher.utter_message(text=text, image=image)
@@ -499,7 +559,7 @@ class SubmitFilter(FormValidationAction):
             dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
                                           f"I will show you up to 5 fashion items that I think will fit you:\n" + items
                                           + "\n\nIf you want, ask me more about a specific item by specifying its "
-                                          "sku code.")
+                                            "sku code.")
 
         return [{"name": "category_slot", "event": "slot", "value": None},
                 {"name": "size_slot", "event": "slot", "value": None},

@@ -24,6 +24,8 @@ rules:
     - active_loop: category_form
     - slot_was_set:
       - requested_slot: category
+    - slot_was_set:
+      - requested_slot: others
     - active_loop: null
     - action: action_category
 
