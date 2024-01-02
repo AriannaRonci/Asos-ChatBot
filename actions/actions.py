@@ -234,7 +234,7 @@ class ValidateActionCategory(FormValidationAction):
             domain: DomainDict):
 
         print('validate category')
-        result = fashion_items[fashion_items['category'].str.lower().str.contains(slot_value)]
+        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: slot_value in x)]
 
         if len(result) == 0:
             dispatcher.utter_message("This category is not available in my catalogue." +
@@ -260,7 +260,7 @@ class ValidateActionCategory(FormValidationAction):
             domain: DomainDict):
         print('dentro validate others')
         category = tracker.get_slot('category')
-        result = fashion_items[fashion_items['category'].str.lower().str.contains(category)].iloc[5:]
+        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: category in x)].iloc[5:]
         print('count' + tracker.get_slot('count'))
 
         if slot_value == 'yes' and len(result) >= 5:
@@ -295,7 +295,7 @@ class GetCategorie(FormValidationAction):
         category = tracker.get_slot('category').lower()
         print('cat' + category)
 
-        result = fashion_items[fashion_items['category'].str.lower().str.contains(category)]
+        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: category in x)]
 
         result = result[['category', 'sku', 'url']]
         if len(result) == 0:
@@ -460,7 +460,7 @@ class ValidateFilterForm(FormValidationAction):
                 "typing 'skip'.")
             return {"category_slot": 'no'}
 
-        result = fashion_items[fashion_items['category'].str.lower().str.contains(slot_value)]
+        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: slot_value in x)]
 
         if len(result) == 0:
             dispatcher.utter_message("This category is not available in my catalogue so this filter will be ignored." +
@@ -538,7 +538,7 @@ class SubmitFilter(FormValidationAction):
         result = fashion_items
 
         if len(category) > 0 and category != 'no':
-            result = result[result['category'].str.lower().str.contains(category)]
+            result = result[result['category'].str.lower().str.split().apply(lambda x: category in x)]
 
         price = tracker.get_slot('price_slot')
         print('dentro submit' + str(price))
