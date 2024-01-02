@@ -239,7 +239,7 @@ class ValidateActionCategory(FormValidationAction):
         if len(result) == 0:
             dispatcher.utter_message("This category is not available in my catalogue." +
                                      "\n")
-            return {'category': 'no'}
+            return {'category': None}
         else:
             cat = ''
             res = result.head(5)
