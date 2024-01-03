@@ -303,8 +303,9 @@ class GetCategorie(FormValidationAction):
             dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
 
         if tracker.get_slot('others').lower() == 'no':
-            dispatcher.utter_message(text="If you want to know more about some of these fashion items just tell me "
-                                          "'I want to know more about a specific fashion item'.")
+            dispatcher.utter_message(text="If you want to know more about the color of some of these fashion items just "
+                                          "tell me "
+                                          "'I want to know more about the color of a specific fashion item'.")
             return [{"name": "category", "event": "slot", "value": None},
                     {"name": "others", "event": "slot", "value": None}]
 
@@ -518,8 +519,8 @@ class ValidateFilterForm(FormValidationAction):
         result = fashion_items[fashion_items['size'].str.contains(slot_value)]
 
         if len(result) == 0:
-            dispatcher.utter_message("This size is not available.")
-            return {'size_slot': None}
+            dispatcher.utter_message("This size is not available in my catalogue so this filter will be ignored.")
+            return {'size_slot': 'no'}
 
         return {'size_slot': slot_value}
 
