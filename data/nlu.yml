@@ -157,12 +157,11 @@ nlu:
 
 - intent: show_details
   examples: |
-    - I want to know more about a specific fashion item
-    - show me a specific fashion item
-    - show me the details about a fashion item
-    - I found a fashion item I'm interested in, would you show me the details
-    - details
-    - specific fashion item
+      - I want to know more about the color of a specific fashion item
+      - show me the color of a specific fashion item
+      - show me the color about a fashion item
+      - I found a fashion item I'm interested in, would you show me the colors?
+      - color
 
 - intent: wash_details
   examples: |
