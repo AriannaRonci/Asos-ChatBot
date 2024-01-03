@@ -165,18 +165,18 @@ nlu:
 
 - intent: wash_details
   examples: |
-    - how can I take care of [116843849](sku)?
-    - how do I wash [116843849](sku) item?
-    - show washing details of [116843849](sku) item
+    - how can I take care of [123500775](sku)?
+    - how do I wash [123500775](sku) item?
+    - show washing details of [123500775](sku) item
     - washing details
     - how do I wash
     - take care
 
 - intent: fabric_details
   examples: |
-    - what is [116843849](sku) item made of?
-    - what are the fabric details about [116843849](sku) item?
-    - tell me what [116843849](sku) is made of
+    - what is [123500775](sku) item made of?
+    - what are the fabric details about [123500775](sku) item?
+    - tell me what [123500775](sku) is made of
     - fabric details
 
 - intent: search_item
