@@ -261,7 +261,8 @@ class ValidateActionCategory(FormValidationAction):
             domain: DomainDict):
         print('dentro validate others')
         category = tracker.get_slot('category')
-        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: category in x)].iloc[5:]
+        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: category in x)].iloc[
+                 5:]
         print('count' + tracker.get_slot('count'))
 
         if slot_value == 'yes' and len(result) >= 5:
@@ -303,14 +304,14 @@ class GetCategorie(FormValidationAction):
             dispatcher.utter_message("Sorry, I didn't find any fashion item that matches this category.")
 
         if tracker.get_slot('others').lower() == 'no':
-            dispatcher.utter_message(text="If you want to know more about the color of some of these fashion items just "
-                                          "tell me "
+            dispatcher.utter_message(text="If you want to know more about the color of some of these fashion items "
+                                          "just tell me "
                                           "'I want to know more about the color of a specific fashion item'.")
             return [{"name": "category", "event": "slot", "value": None},
                     {"name": "others", "event": "slot", "value": None}]
 
-        dispatcher.utter_message("If you want to know more about some of these fashion items just tell me "
-                                 "'I want to know more about a specific fashion item'.")
+        dispatcher.utter_message("If you want to know more about the color of some of these fashion items just tell me "
+                                 "'I want to know more about the color of a specific fashion item'.")
         return [{"name": "category", "event": "slot", "value": None},
                 {"name": "others", "event": "slot", "value": None}]
 
