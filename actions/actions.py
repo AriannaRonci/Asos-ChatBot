@@ -246,10 +246,7 @@ class ValidateActionCategory(FormValidationAction):
             for ind in res.index:
                 cat = cat + f' - ' + str(int(result["sku"][ind])) + ': ' + res["category"][ind] + '.\n'
             dispatcher.utter_message(text=f"I found {len(result)} results that match your input.\n"
-                                          f"I will show you up to 5 fashion items that I think will fit you:\n" + cat
-                                          + "\nIf you want to know more about the color of some of these fashion items "
-                                            "just tell me "
-                                            "'I want to know more about the color of a specific fashion item'.")
+                                          f"I will show you up to 5 fashion items that I think will fit you:\n" + cat)
             count_value = '5'
             return {'category': slot_value, 'count': '5'}
 
