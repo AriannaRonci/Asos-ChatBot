@@ -459,7 +459,8 @@ class ValidateFilterForm(FormValidationAction):
                 "typing 'skip'.")
             return {"category_slot": 'no'}
 
-        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: slot_value in x)]
+        result = fashion_items[fashion_items['category'].str.lower().str.split().apply(lambda x: slot_value.lower()
+                                                                                                 in x)]
 
         if len(result) == 0:
             dispatcher.utter_message("This category is not available in my catalogue so this filter will be ignored." +
@@ -513,7 +514,7 @@ class ValidateFilterForm(FormValidationAction):
             print('skip slot')
             return {"size_slot": 'no'}
 
-        result = fashion_items[fashion_items['size'].str.contains(slot_value)]
+        result = fashion_items[fashion_items['size'].str.lower().str.contains(slot_value.lower())]
 
         if len(result) == 0:
             dispatcher.utter_message("This size is not available in my catalogue so this filter will be ignored.")
