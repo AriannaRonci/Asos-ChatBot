@@ -14,7 +14,6 @@ from rasa_sdk.executor import CollectingDispatcher
 
 import pandas as pd
 from rasa_sdk.types import DomainDict
-from rasa_sdk.events import SlotSet
 
 fashion_items = pd.read_csv("dataset/product_asos_clean.csv")
 
