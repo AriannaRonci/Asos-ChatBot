@@ -381,7 +381,7 @@ class ValidateDetailsForm(FormValidationAction):
             dispatcher.utter_message(text="The sku code is not valid.")
             return {'sku': None}
         else:
-            dispatcher.utter_message(text=f'Ok, you chose to buy the fashion item {sku}.')
+            dispatcher.utter_message(text=f'Ok, you chose the fashion item {sku}.')
             return {'sku': sku}
 
     def validate_color(
